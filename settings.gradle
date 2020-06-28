@@ -1,2 +1,4 @@
 include ':app', ':hiui'
 rootProject.name='MyUI'
+include ':mylibrary'
+project(':mylibrary').projectDir = '../MyLibrary/HiLibrary/' as File

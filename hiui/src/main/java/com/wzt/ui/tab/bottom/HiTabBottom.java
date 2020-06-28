@@ -57,7 +57,7 @@ public class HiTabBottom extends RelativeLayout implements IHiTab<HiTabBottomInf
         ViewGroup.LayoutParams layoutParams = getLayoutParams();
         layoutParams.height = height;
         setLayoutParams(layoutParams);
-        tabImageView.setVisibility(GONE);
+        tabNameView.setVisibility(GONE);
     }
 
     private void inflateInfo(boolean init, boolean selected) {
