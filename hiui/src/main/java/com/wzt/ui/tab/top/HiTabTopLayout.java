@@ -119,10 +119,15 @@ public class HiTabTopLayout extends HorizontalScrollView implements IHiTabLayout
     }
 
     int tabWidth;
-    private void autoScroll(HiTabTopInfo<?> next) {
-        HiTabTop hiTabTop = findTab(next);
+    /**
+     * 自动滚动，实现点击的位置能够自动滚动以展示前后2个
+     *
+     * @param nextInfo 点击tab的info
+     */
+    private void autoScroll(HiTabTopInfo<?> nextInfo) {
+        HiTabTop hiTabTop = findTab(nextInfo);
         if(hiTabTop == null) return;
-        int index = infoList.indexOf(next);
+        int index = infoList.indexOf(nextInfo);
         int[] loc = new int[2];
         //获取点击控件在屏幕的位置
         hiTabTop.getLocationInWindow(loc);
