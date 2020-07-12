@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.tab_top_demo.*
  *
  */
 class MyTopDemoActivity : AppCompatActivity() {
-    internal var tabsStr = arrayOf("热门", "服装", "数码", "鞋子", "零食", "家电", "汽车", "百货", "家居", "装修", "运动")
+    private var tabsStr = arrayOf("热门", "服装", "数码", "鞋子", "零食", "家电", "汽车", "百货", "家居", "装修", "运动")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

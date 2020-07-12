@@ -1,6 +1,7 @@
 package com.wzt.ui.tab.top;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -113,6 +114,80 @@ public class HiTabTopLayout extends HorizontalScrollView implements IHiTabLayout
             final int index = infoList.indexOf(nextInfo);
             dispatchSelected(index, selectedInfo, nextInfo);
             selectedInfo = nextInfo;
+            autoScroll(selectedInfo);
+        }
+    }
+
+    int tabWidth;
+    private void autoScroll(HiTabTopInfo<?> next) {
+        HiTabTop hiTabTop = findTab(next);
+        if(hiTabTop == null) return;
+        int index = infoList.indexOf(next);
+        int[] loc = new int[2];
+        //获取点击控件在屏幕的位置
+        hiTabTop.getLocationInWindow(loc);
+        if (tabWidth == 0) {
+            tabWidth = hiTabTop.getWidth();
+        }
+        int scrollWidth;
+        final boolean isLeft = hiTabTop.getRight() < getWidth() / 2 + tabWidth;
+        if (isLeft) {
+            scrollWidth = rangeScrollWidth(index, -2);
+        } else {
+            scrollWidth = rangeScrollWidth(index, 2);
+        }
+        scrollBy(scrollWidth, 0);
+    }
+
+    /**
+     * 获取可滚动的范围
+     *
+     * @param index 从第几个开始
+     * @param range 向前向后的范围
+     * @return 可滚动的范围
+     */
+    private int rangeScrollWidth(int index, int range) {
+        int scrollWidth = 0;
+        for (int i = 0; i <= Math.abs(range); i++) {
+            int next;
+            if (range < 0) {
+                next = index + range + i;
+            } else {
+                next = index + range - i;
+            }
+            if (next >= 0 && next < infoList.size()) {
+                scrollWidth += scrollWidth(next, range < 0);
+            }
+        }
+        return scrollWidth;
+    }
+
+    /**
+     * 指定位置的控件可滚动的距离
+     *
+     * @param index   指定位置的控件
+     * @param toLeft 是否是点击了屏幕右侧
+     * @return 可滚动的距离
+     */
+    private int scrollWidth(int index, boolean toLeft) {
+        HiTabTop tabTop = findTab(infoList.get(index));
+        if (tabTop == null) {
+            return 0;
+        }
+        Rect rect = new Rect();
+        tabTop.getLocalVisibleRect(rect);
+        if (toLeft) {
+            if (rect.left < -tabWidth) {//完全不可见
+                return -tabWidth;
+            } else {
+                return -rect.left;
+            }
+        } else {
+            if (rect.right > tabWidth) {//完全不可见
+                return tabWidth;
+            } else {
+                return tabWidth - rect.right;
+            }
         }
     }
 
