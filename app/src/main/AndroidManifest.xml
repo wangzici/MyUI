@@ -19,6 +19,7 @@
 
         <activity android:name=".MyBottomDemoActivity"/>
         <activity android:name=".MyTopDemoActivity"/>
+        <activity android:name=".HiRefreshDemoActivity"/>
     </application>
 
 </manifest>

@@ -17,6 +17,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val intent = Intent(this@MainActivity, MyTopDemoActivity::class.java)
                 startActivity(intent)
             }
+            R.id.tv_refresh_layout->{
+                val intent = Intent(this@MainActivity, HiRefreshDemoActivity::class.java)
+                startActivity(intent)
+            }
         }
     }
 
@@ -25,5 +29,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_main)
         tv_bottom_layout.setOnClickListener(this)
         tv_top_layout.setOnClickListener(this)
+        tv_refresh_layout.setOnClickListener(this)
     }
 }
