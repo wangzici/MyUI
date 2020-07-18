@@ -1,4 +1,4 @@
-package com.wzt.ui.banner;
+package com.wzt.ui.banner.core;
 
 import android.app.Activity;
 import android.content.Context;
@@ -55,6 +55,10 @@ public class HiViewPager extends ViewPager {
         if (!mAutoPlay) {
             mHandler.removeCallbacks(mRunnable);
         }
+        //若已经在界面显示时调用setAutoPlay，直接开始自动轮播
+        if (mAutoPlay && isAttachedToWindow()) {
+            start();
+        }
     }
 
     public void stop() {
@@ -80,8 +84,7 @@ public class HiViewPager extends ViewPager {
         }
         nextPosition = getCurrentItem() + 1;
         if (nextPosition >= getAdapter().getCount()) {
-            // TODO: 2020/7/17 获取第一个item的索引
-            nextPosition = 0;
+            nextPosition = ((HiBannerAdapter) getAdapter()).getFirstItem();
         }
         setCurrentItem(nextPosition, true);
         return nextPosition;
