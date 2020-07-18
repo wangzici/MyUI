@@ -100,6 +100,7 @@ public class HiBannerDelegate implements IHiBanner,ViewPager.OnPageChangeListene
         }
         if (mHiIndicator == null) {
             mHiIndicator = new HiCircleIndicator(mContext);
+            mHiIndicator.onInflate(mHiBannerMos.size());
         }
         mAdapter.setLayoutResId(layoutResId);
         mAdapter.setBannerData(mHiBannerMos);
