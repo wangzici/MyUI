@@ -40,6 +40,7 @@ class HiBannerDemoActivity : AppCompatActivity() {
         hi_banner.setAutoPlay(false)
         hi_banner.setIntervalTime(2000)
         hi_banner.setBannerData(R.layout.banner_item_layout, moList)
+        hi_banner.setScrollDuration(1000)
         hi_banner.setBindAdapter{ viewHolder, mo, _ ->
             val imageView = viewHolder.findViewById<ImageView>(R.id.iv_image)
             Glide.with(this).load(mo.url).into(imageView)

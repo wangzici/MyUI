@@ -65,6 +65,17 @@ public class HiViewPager extends ViewPager {
         mHandler.removeCallbacksAndMessages(null);
     }
 
+    public void setScrollDuration(int scrollDuration) {
+        try {
+            Field mScroller = ViewPager.class.getDeclaredField("mScroller");
+            mScroller.setAccessible(true);
+            mScroller.set(this, new HiBannerScroller(getContext(), scrollDuration));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
     private void start() {
         mHandler.removeCallbacksAndMessages(null);
         if (mAutoPlay) {

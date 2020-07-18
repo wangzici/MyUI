@@ -92,6 +92,7 @@ public class HiBannerDelegate implements IHiBanner,ViewPager.OnPageChangeListene
     @Override
     public void setScrollDuration(int duration) {
         this.mScrollDuration = duration;
+        if (mHiViewPager != null && duration > 0) mHiViewPager.setScrollDuration(duration);
     }
 
     private void init(int layoutResId) {
@@ -109,6 +110,9 @@ public class HiBannerDelegate implements IHiBanner,ViewPager.OnPageChangeListene
         mAdapter.setBannerClickListener(mOnBannerClickListener);
 
         mHiViewPager = new HiViewPager(mContext);
+        if (mScrollDuration > 0) {
+            mHiViewPager.setScrollDuration(mScrollDuration);
+        }
         mHiViewPager.setAutoPlay(mAutoPlay);
         mHiViewPager.setIntervalTime(mIntervalTime);
         mHiViewPager.addOnPageChangeListener(this);
