@@ -16,11 +16,11 @@ abstract class HiDataItem<DATA, VH : RecyclerView.ViewHolder>(data: DATA){
         this.mAdapter = adapter
     }
 
-    fun getLayoutFromRes(): Int {
+    open fun getLayoutFromRes(): Int {
         return -1
     }
 
-    fun getItemView(): View? {
+    open fun getItemView(): View? {
         return null
     }
 

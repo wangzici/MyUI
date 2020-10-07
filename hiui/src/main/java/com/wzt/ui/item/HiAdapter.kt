@@ -10,13 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import java.lang.reflect.ParameterizedType
 
 class HiAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-    private var dataSets = mutableListOf<HiDataItem<*, RecyclerView.ViewHolder>>()
+    private var dataSets = mutableListOf<HiDataItem<*, out RecyclerView.ViewHolder>>()
+
     //每一个viewType保存第一个item实例，用于createViewHolder时调用
-    private var typeArrays = SparseArray<HiDataItem<*, RecyclerView.ViewHolder>>()
-    private val mContext: Context = context
+    private var typeArrays = SparseArray<HiDataItem<*, out RecyclerView.ViewHolder>>()
+
     private var inflater: LayoutInflater = LayoutInflater.from(context)
 
-    fun addItem(index: Int, item: HiDataItem<*, RecyclerView.ViewHolder>, notify: Boolean) {
+    fun addItem(index: Int, item: HiDataItem<*,out RecyclerView.ViewHolder>, notify: Boolean) {
         if (index >= 0) {
             dataSets.add(index, item)
         } else {
@@ -29,7 +30,7 @@ class HiAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    fun addItems(items: List<HiDataItem<*, RecyclerView.ViewHolder>>, notify: Boolean) {
+    fun addItems(items: List<HiDataItem<*,out RecyclerView.ViewHolder>>, notify: Boolean) {
         val start = dataSets.size
         items.forEach {
             dataSets.add(it)
@@ -40,7 +41,7 @@ class HiAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder
         }
     }
 
-    fun removeItem(index: Int): HiDataItem<*, RecyclerView.ViewHolder>? {
+    fun removeItem(index: Int): HiDataItem<*,out RecyclerView.ViewHolder>? {
         if (index >= 0 && index < dataSets.size) {
             val item = dataSets.removeAt(index)
             notifyItemRemoved(index)
@@ -71,7 +72,7 @@ class HiAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder
      * 根据ViewHolder子类泛型，获取其构造方法并生成实例
      */
     private fun createViewHolderInternal(
-        clazz: Class<HiDataItem<*, RecyclerView.ViewHolder>>,
+        clazz: Class<HiDataItem<*, out RecyclerView.ViewHolder>>,
         view: View?
     ): RecyclerView.ViewHolder {
         val superClass = clazz.genericInterfaces
@@ -95,7 +96,7 @@ class HiAdapter(context: Context) : RecyclerView.Adapter<RecyclerView.ViewHolder
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val item = dataSets[position]
+        val item = dataSets[position] as HiDataItem<*, RecyclerView.ViewHolder>
         item.onBindData(holder, position)
     }
 
