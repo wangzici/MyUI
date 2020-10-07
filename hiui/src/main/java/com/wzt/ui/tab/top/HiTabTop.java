@@ -1,4 +1,4 @@
-package com.wzt.ui.tab.bottom;
+package com.wzt.ui.tab.top;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -6,6 +6,7 @@ import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -15,38 +16,43 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.wzt.ui.R;
+import com.wzt.ui.tab.bottom.HiTabBottomInfo;
 import com.wzt.ui.tab.common.IHiTab;
 
-public class HiTabBottom extends RelativeLayout implements IHiTab<HiTabBottomInfo<?>> {
-    HiTabBottomInfo<?> tabInfo;
+public class HiTabTop extends RelativeLayout implements IHiTab<HiTabTopInfo<?>> {
+    HiTabTopInfo<?> tabInfo;
     TextView tabNameView;
     ImageView tabImageView;
-    TextView tabIconView;
+    private View indicator;
 
-    public HiTabBottom(Context context) {
+    public HiTabTop(Context context) {
         this(context, null);
     }
 
-    public HiTabBottom(Context context, AttributeSet attrs) {
+    public HiTabTop(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public HiTabBottom(Context context, AttributeSet attrs, int defStyleAttr) {
+    public HiTabTop(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         initView();
     }
 
     private void initView() {
-        LayoutInflater.from(getContext()).inflate(R.layout.hi_tab_bottom, this);
+        LayoutInflater.from(getContext()).inflate(R.layout.hi_tab_top, this);
         tabNameView = findViewById(R.id.tv_name);
         tabImageView = findViewById(R.id.iv_image);
-        tabIconView = findViewById(R.id.tv_icon);
+        indicator = findViewById(R.id.tab_top_indicator);
     }
 
     @Override
-    public void setHiTabInfo(@NonNull HiTabBottomInfo<?> data) {
+    public void setHiTabInfo(@NonNull HiTabTopInfo<?> data) {
         tabInfo = data;
         inflateInfo(true, false);
+    }
+
+    public HiTabTopInfo<?> getHiTabInfo() {
+        return tabInfo;
     }
 
     /**
@@ -61,32 +67,30 @@ public class HiTabBottom extends RelativeLayout implements IHiTab<HiTabBottomInf
     }
 
     private void inflateInfo(boolean init, boolean selected) {
-        if (tabInfo.tabType == HiTabBottomInfo.TabType.BITMAP) {
+        if (tabInfo.tabType == HiTabTopInfo.TabType.BITMAP) {
             if (init) {
-                if (!TextUtils.isEmpty(tabInfo.name)) {
-                    tabNameView.setText(tabInfo.name);
-                }
                 tabImageView.setVisibility(VISIBLE);
+                tabNameView.setVisibility(GONE);
             }
             tabImageView.setImageBitmap(selected ? tabInfo.selectedBitmap : tabInfo.defaultBitmap);
-        } else if (tabInfo.tabType == HiTabBottomInfo.TabType.ICON) {
+            indicator.setVisibility(selected ? VISIBLE : INVISIBLE);
+        } else if (tabInfo.tabType == HiTabTopInfo.TabType.TEXT) {
             if (init) {
+                tabImageView.setVisibility(GONE);
+                tabNameView.setVisibility(VISIBLE);
                 if (!TextUtils.isEmpty(tabInfo.name)) {
                     tabNameView.setText(tabInfo.name);
+                    tabNameView.setVisibility(VISIBLE);
                 }
-                tabIconView.setVisibility(VISIBLE);
-                Typeface typeface = Typeface.createFromAsset(getContext().getAssets(), tabInfo.iconFont);
-                tabIconView.setTypeface(typeface);
             }
-            tabIconView.setText(selected && !TextUtils.isEmpty(tabInfo.selectedIconName) ? tabInfo.selectedIconName : tabInfo.defaultIconName);
             int color = getTextColor(selected ? tabInfo.selectedColor : tabInfo.defaultColor);
             tabNameView.setTextColor(color);
-            tabIconView.setTextColor(color);
+            indicator.setVisibility(selected ? VISIBLE : INVISIBLE);
         }
     }
 
     @Override
-    public void onTabSelectedChange(int index, @Nullable HiTabBottomInfo<?> prevInfo, @NonNull HiTabBottomInfo<?> nextInfo) {
+    public void onTabSelectedChange(int index, @Nullable HiTabTopInfo<?> prevInfo, @NonNull HiTabTopInfo<?> nextInfo) {
         if (prevInfo != nextInfo) {
             if (nextInfo == tabInfo) {
                 inflateInfo(false, true);
