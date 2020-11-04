@@ -3,13 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     tools:context=".MyTopDemoActivity">
 
     <com.wzt.ui.tab.top.HiTabTopLayout
         android:id="@+id/tab_top_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:separatorWidth="30dp"
+        app:separatorSkip="true"/>
 
     <View
         android:layout_width="match_parent"

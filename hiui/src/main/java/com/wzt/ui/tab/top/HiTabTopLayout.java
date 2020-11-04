@@ -1,6 +1,7 @@
 package com.wzt.ui.tab.top;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 
+import com.wzt.ui.R;
 import com.wzt.ui.tab.common.IHiTabLayout;
 
 import java.util.ArrayList;
@@ -22,6 +24,8 @@ import java.util.List;
  */
 public class HiTabTopLayout extends HorizontalScrollView implements IHiTabLayout<HiTabTop, HiTabTopInfo<?>> {
     private List<HiTabTopInfo<?>> infoList;
+    private int separatorWidth;
+    private boolean separatorSkip;
     List<OnTabSelectedListener<HiTabTopInfo<?>>> tabSelectedChangeListeners = new ArrayList<>();
     HiTabTopInfo<?> selectedInfo;
 
@@ -35,8 +39,15 @@ public class HiTabTopLayout extends HorizontalScrollView implements IHiTabLayout
 
     public HiTabTopLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initCustomAttrs(context, attrs);
     }
 
+    private void initCustomAttrs(Context context, AttributeSet attrs) {
+        TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.HiTabTopLayout);
+        separatorWidth = typedArray.getDimensionPixelSize(R.styleable.HiTabTopLayout_separatorWidth, -1);
+        separatorSkip = typedArray.getBoolean(R.styleable.HiTabTopLayout_separatorSkip, false);
+        typedArray.recycle();
+    }
 
     @Override
     public HiTabTop findTab(@NonNull HiTabTopInfo<?> data) {
@@ -71,7 +82,7 @@ public class HiTabTopLayout extends HorizontalScrollView implements IHiTabLayout
             return;
         }
 
-        Iterator iterator = tabSelectedChangeListeners.iterator();
+        Iterator<OnTabSelectedListener<HiTabTopInfo<?>>> iterator = tabSelectedChangeListeners.iterator();
         while (iterator.hasNext()) {
             if (iterator.next() instanceof HiTabTop) {
                 iterator.remove();
@@ -82,8 +93,21 @@ public class HiTabTopLayout extends HorizontalScrollView implements IHiTabLayout
 
         this.infoList = infoList;
         LinearLayout linearLayout = getRootLayout(true);
-        for (final HiTabTopInfo<?> info : infoList) {
+        for (int i = 0; i < infoList.size(); i++) {
+            final HiTabTopInfo<?> info = infoList.get(i);
             HiTabTop hiTabTop = new HiTabTop(getContext());
+            if (separatorWidth >= 0) {
+                int paddingLeft = separatorWidth;
+                int paddingRight = separatorWidth;
+                if (separatorSkip && i == 0) {
+                    paddingLeft = 0;
+                }
+
+                if (separatorSkip && i == infoList.size() - 1) {
+                    paddingRight = 0;
+                }
+                hiTabTop.setPadding(paddingLeft, 0, paddingRight, 0);
+            }
             hiTabTop.setHiTabInfo(info);
             tabSelectedChangeListeners.add(hiTabTop);
             linearLayout.addView(hiTabTop);

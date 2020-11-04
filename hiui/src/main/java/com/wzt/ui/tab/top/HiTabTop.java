@@ -2,7 +2,6 @@ package com.wzt.ui.tab.top;
 
 import android.content.Context;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.wzt.ui.R;
-import com.wzt.ui.tab.bottom.HiTabBottomInfo;
 import com.wzt.ui.tab.common.IHiTab;
 
 public class HiTabTop extends RelativeLayout implements IHiTab<HiTabTopInfo<?>> {
