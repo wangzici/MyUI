@@ -5,4 +5,9 @@
         <attr name="loop" format="boolean"/>
         <attr name="intervalTime" format="integer|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="HiTabTopLayout">
+        <attr name="separatorWidth" format="dimension"/>
+        <attr name="separatorSkip" format="boolean"/>
+    </declare-styleable>
 </resources>
